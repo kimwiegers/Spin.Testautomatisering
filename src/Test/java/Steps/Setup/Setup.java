@@ -1,12 +1,23 @@
 package Steps.Setup;
 
+import Omgevingen.Acceptatie;
+import PageObjects.LoginPagina;
+import PageObjects.TijdelijkeWijzigingen;
 import Services.*;
 import TestData.DriverSetup;
+import TestData.GebruikersData;
+import TestData.WegData;
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.util.concurrent.TimeUnit;
 
 
 public class Setup {
@@ -27,7 +38,6 @@ public class Setup {
         driver.manage().window().setSize(new Dimension(1920, 1080));
         _driverSetup.setDriver(driver);
     }
-
 
     @After
     public void CloseBrowser() {

@@ -9,7 +9,7 @@ public class WegData
     public static String TotKilometer = "46,000";
 
     //Invuldata in Tijdelijke Wijzigingen menu
-    public static String GeneratedTextInNaamField = "A12 Re 44,000 - 46,000";
+    public static String TijdelijkeWijzigingNaam = "A12 Re 44,000 - 46,000";
     public static String MiddelsteKilometerSchaalaanduiderVolledigUitgezoomd = "2";
     public static String LaatsteKilometerSchaalaanduiderVolledigUitgezoomd = "4";
 

@@ -46,6 +46,7 @@ public class BrowserFactory {
         options.setExperimentalOption("prefs", prefs);
         options.addArguments("--no-sandbox");
         options.addArguments("--disable-dev-shm-usage");
+        //options.addArguments("--headless");
 
         ChromeDriver driver = new ChromeDriver(options);
         driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);

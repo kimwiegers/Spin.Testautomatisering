@@ -10,8 +10,12 @@ import cucumber.api.java.nl.Dan;
 import cucumber.api.java.nl.En;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
 import java.awt.*;
 
+import static PageObjects.TijdelijkeWijzigingen.*;
 import static org.assertj.core.api.Assertions.*;
 
 public class TijdelijkeWijzigingenSteps {
@@ -29,11 +33,10 @@ public class TijdelijkeWijzigingenSteps {
         _testdata = testdata;
     }
 
-    @cucumber.api.java.nl.En("de medewerker maakt een nieuwe tijdelijke wijziging aan")
-    public void deMedewerkerMaaktEenNieuweTijdelijkeWijzigingAan() throws Exception
+    @En("de medewerker een nieuwe tijdelijke wijziging opent en alle benodigde informatie geeft")
+    public void deMedewerkerEenNieuweTijdelijkeWijzigingOpentEnAlleBenodigdeInformatieGeeft() throws Exception
     {
         _tijdelijkeWijzigingen.OpenTijdelijkeWijzigingMenu();
-
         _tijdelijkeWijzigingen.VulVerplichteVeldenInVoorEenTijdelijkeWijziging();
     }
 
@@ -48,7 +51,7 @@ public class TijdelijkeWijzigingenSteps {
     @Dan("is het niet mogelijk de locatie op te vragen van de tijdelijke wijziging")
     public void isHetNietMogelijkDeLocatieOpTeVragenVanDeTijdelijkeWijziging()
     {
-        WebElement zoekLocatieButton = driver.findElement(TijdelijkeWijzigingen.ZoekLocatie);
+        WebElement zoekLocatieButton = driver.findElement(ZoekLocatie);
         assertThat(zoekLocatieButton.isEnabled()).isTrue();
     }
 
@@ -56,18 +59,18 @@ public class TijdelijkeWijzigingenSteps {
     @Dan("wordt automatisch een naam gegenereerd voor de tijdelijke wijziging")
     public void wordtAutomatischEenNaamGegenereerdVoorDeTijdelijkeWijziging() throws Exception
     {
-        String gegenereerdeNaamTijdelijkeWijziging = _selenium.GetTextFromElement(TijdelijkeWijzigingen.Naam);
-        assertThat(gegenereerdeNaamTijdelijkeWijziging).matches(WegData.GeneratedTextInNaamField);
+        String gegenereerdeNaamTijdelijkeWijziging = _selenium.GetTextFromElement(Naam);
+        assertThat(gegenereerdeNaamTijdelijkeWijziging).matches(WegData.TijdelijkeWijzigingNaam);
     }
 
     @En("is de data onder Brondata situatie vooringevuld maar niet bewerkbaar")
     public void isDeDataOnderBrondataSituatieVooringevuldMaarNietBewerkbaar() throws InterruptedException
     {
-        assertThat(_selenium.ElementHasContent(TijdelijkeWijzigingen.RijstrokenBestaand)).isTrue();
-        assertThat(_selenium.ElementHasContent(TijdelijkeWijzigingen.PortalenBestaand)).isTrue();
+        assertThat(_selenium.ElementHasContent(RijstrokenBestaand)).isTrue();
+        assertThat(_selenium.ElementHasContent(PortalenBestaand)).isTrue();
 
-        assertThat(_selenium.ElementIsEnabled(TijdelijkeWijzigingen.RijstrokenBestaand)).isFalse();
-        assertThat(_selenium.ElementIsEnabled(TijdelijkeWijzigingen.PortalenBestaand)).isFalse();
+        assertThat(_selenium.ElementIsEnabled(RijstrokenBestaand)).isFalse();
+        assertThat(_selenium.ElementIsEnabled(PortalenBestaand)).isFalse();
     }
 
     //Stappen bij testgeval 'Zoomfunctie schematische kaart'
@@ -76,7 +79,7 @@ public class TijdelijkeWijzigingenSteps {
     {
         for (int i = 0; i < 3; i++)
         {
-            WebElement zoomUitknop = driver.findElement(TijdelijkeWijzigingen.ZoomUitKnop);
+            WebElement zoomUitknop = driver.findElement(ZoomUitKnop);
             zoomUitknop.click();
         }
     }
@@ -84,8 +87,8 @@ public class TijdelijkeWijzigingenSteps {
     @Dan("is de schematische kaart uitgezoomd")
     public void isDeSchematischeKaartUitgezoomd() throws Exception
     {
-        String middelsteKilometerSchaalAanduider = _selenium.GetTextFromElement(TijdelijkeWijzigingen.MiddelsteKilometerSchaalAanduider);
-        String laatsteKilometerSchaalAanduider = _selenium.GetTextFromElement(TijdelijkeWijzigingen.LaatsteKilometerSchaalAanduider);
+        String middelsteKilometerSchaalAanduider = _selenium.GetTextFromElement(MiddelsteKilometerSchaalAanduider);
+        String laatsteKilometerSchaalAanduider = _selenium.GetTextFromElement(LaatsteKilometerSchaalAanduider);
         assertThat(middelsteKilometerSchaalAanduider).matches(
                 WegData.MiddelsteKilometerSchaalaanduiderVolledigUitgezoomd);
         assertThat(laatsteKilometerSchaalAanduider).matches(
@@ -94,15 +97,16 @@ public class TijdelijkeWijzigingenSteps {
 
     //Stappen bij testgeval 'Onjuiste rijstrook data ivullen'
     @En("de medewerker onjuiste data invoert over de rijstroken")
-    public void deMedewerkerOnjuisteDataInvoertOverDeRijstroken()
+    public void deMedewerkerOnjuisteDataInvoertOverDeRijstroken() throws InterruptedException
     {
-        _selenium.EnterDataInputField(TijdelijkeWijzigingen.RijstrokenNieuw, "N=N=S=");
+        Thread.sleep(1000);
+        _selenium.EnterDataInputField(RijstrokenNieuw, "N=N=S=");
     }
 
     @Dan("zijn de onjuiste rijstrookgegevens met rood onderstreept")
     public void zijnDeOnjuisteRijstrookgegevensMetRoodOnderstreept()
     {
-      WebElement rijstroken = driver.findElement(TijdelijkeWijzigingen.RijstrokenNieuw);
+      WebElement rijstroken = driver.findElement(RijstrokenNieuw);
       assertThat(rijstroken.getAttribute("class").contains("x-form-invalid")).isTrue();
     }
 
@@ -114,30 +118,39 @@ public class TijdelijkeWijzigingenSteps {
         _tijdelijkeWijzigingen.BewerkEersteBestaandeTijdelijkeWijziging();
 
         //De naam wordt in een property gezet om te kunnen asserten dat de juiste tijdelijke wijziging getoond blijft na bewerken;
-        String tijdelijkeWijzigingNaam = _selenium.GetTextFromElement(TijdelijkeWijzigingen.EersteBestaandeTijdelijkeWijzigingNaam);
+        String tijdelijkeWijzigingNaam = _selenium.GetTextFromElement(EersteBestaandeTijdelijkeWijzigingNaam);
         _testdata.setTijdelijkeWijzigingNaam(tijdelijkeWijzigingNaam);
     }
 
     @Dan("blijft de juiste tijdelijke wijziging geselecteert")
     public void blijftDeJuisteTijdelijkeWijzigingGeselecteert() throws Exception
     {
-        String tijdelijkeWijzigingNaam = _selenium.GetTextFromElement(TijdelijkeWijzigingen.Naam);
+        String tijdelijkeWijzigingNaam = _selenium.GetTextFromElement(Naam);
         assertThat(tijdelijkeWijzigingNaam).matches(_testdata.getTijdelijkeWijzigingNaam());
     }
 
-
-
-    @En("de medewerker de tijdelijke wijzigingsdata invult")
-    public void deMedewerkerDeTijdelijkeWijzigingsdataInvult() throws AWTException
+    @cucumber.api.java.nl.En("de medewerker maakt een nieuwe tijdelijke wijziging aan")
+    public void deMedewerkerMaaktEenNieuweTijdelijkeWijzigingAan() throws Exception
     {
-        _selenium.EnterDataInputField(TijdelijkeWijzigingen.RijstrokenNieuw, WegData.NieuweRijstrookData);
-        _selenium.EnterDataInputField(TijdelijkeWijzigingen.Signaalgevers, WegData.NieuweSignaalgevers);
-        _selenium.EnterDataInputField(TijdelijkeWijzigingen.Beschrijving, WegData.Beschrijving);
+        _tijdelijkeWijzigingen.OpenTijdelijkeWijzigingMenu();
+        _tijdelijkeWijzigingen.VerwijderBestaandeTestWijzigingen();
+        _tijdelijkeWijzigingen.VulVerplichteVeldenInVoorEenTijdelijkeWijziging();
 
-        //Klik op de plus knop om portalen toe te voegen
-        _selenium.ClickOnElementBasedOnCoordinates(1425, 575);
-        driver.findElement(TijdelijkeWijzigingen.VoegPortalenToeOkKnop).click();
+        driver.findElement(Bewaren).click();
 
-        driver.findElement(TijdelijkeWijzigingen.Actualiseren).click();
+        //Klik op OK om de maatregelen te accepteren
+        Thread.sleep(1300);
+        _selenium.ClickOnElementBasedOnCoordinates(BetrokkenMaatregelenAccepterenX, BetrokkenMaatregelenAccepterenY);
+    }
+
+    @Dan("is de tijdelijke wijziging aan de tabel Objecten toegevoegd")
+    public void isDeTijdelijkeWijzigingAanDeTabelObjectenToegevoegd() throws Exception
+    {
+        //Sorteer de tijdelijke wijziging op wijzigingsdatum om de nieuwste bovenaan te zien
+        _selenium.ClickOnElementBasedOnCoordinates(DatumVanDropdownX, DatumVanDropdownY);
+        _selenium.ClickOnElementBasedOnCoordinates(DatumVanAflopendSorterenX, DatumVanAflopendSorterenY);
+
+        String tijdelijkeWijzigingnaam = _selenium.GetTextFromElement(NieuweWijziging);
+        assertThat(tijdelijkeWijzigingnaam).matches(WegData.TijdelijkeWijzigingNaam);
     }
 }
