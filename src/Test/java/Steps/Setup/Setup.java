@@ -17,6 +17,7 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.io.File;
 import java.util.concurrent.TimeUnit;
 
 
@@ -37,6 +38,20 @@ public class Setup {
         driver.manage().window().setPosition(new Point(0 , -5));
         driver.manage().window().setSize(new Dimension(1920, 1080));
         _driverSetup.setDriver(driver);
+    }
+
+    @Before("@ExportTijdelijkeWijziging")
+    public void DeleteTestRecords()
+    {
+        File[] files = new File(GebruikersData.DownloadFolder).listFiles();
+        for (File file : files)
+        {
+            String name = file.getName();
+            if (name.contains("Tijdelijke_Wijzigingen"))
+            {
+                file.delete();
+            }
+        }
     }
 
     @After

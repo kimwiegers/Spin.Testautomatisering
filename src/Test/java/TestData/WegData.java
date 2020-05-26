@@ -8,6 +8,8 @@ public class WegData
     public static String VanKilometer = "44,000";
     public static String TotKilometer = "46,000";
 
+    public static String VanKilometerTeHogeKilometrage = "33,000";
+
     //Invuldata in Tijdelijke Wijzigingen menu
     public static String TijdelijkeWijzigingNaam = "A12 Re 44,000 - 46,000";
     public static String MiddelsteKilometerSchaalaanduiderVolledigUitgezoomd = "2";
@@ -15,5 +17,5 @@ public class WegData
 
     public static String NieuweRijstrookData = "N=N=N=";
     public static String NieuweSignaalgevers = "N";
-    public static String Beschrijving = "Test A12";
+    public static String Beschrijving = "Test A12@$%^";
 }

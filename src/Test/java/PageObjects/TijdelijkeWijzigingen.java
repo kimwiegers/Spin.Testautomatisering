@@ -8,6 +8,7 @@ public class TijdelijkeWijzigingen
     public static By Naam = By.name("name");
     public static By DatumVan = By.name("timeFrom");
     public static By DatumVanKalender = By.id("x-auto-709");
+    public static By DatumTotKalender = By.xpath("/html/body/div[1]/div[3]/div[1]/div[2]/div/div[2]/div[1]/div/div[2]/div[1]/form/div/div[1]/div[2]/div[1]/form/div/div/div[1]/div/table/tbody/tr/td[1]/div/table/tbody/tr/td/div/div[4]/div[1]/div/img");
     public static By VandaagInVanKalender = By.xpath("//button[contains(text(),'Vandaag')]");
 
     public static By Wegnummer = By.name("mapLocation.fromRoadNumber");
@@ -53,6 +54,7 @@ public class TijdelijkeWijzigingen
     public static By Nieuw = By.xpath("//button[contains(text(),'Nieuw')]");
     public static By Bewaren = By.xpath("/html/body/div[1]/div[3]/div[2]/div/table[8]/tbody/tr[2]/td[2]/em/button");
     public static By Verwijderen = By.xpath("/html/body/div[1]/div[3]/div[2]/div/table[3]/tbody/tr[2]/td[2]/em/button");
+    public static By Exporteren = By.xpath("//*[@id='x-auto-591']/tbody/tr[2]/td[2]/em/button");
 
     //Elementen onder 'Objecten'
     public static By EersteBestaandeTijdelijkeWijziging = By.xpath("/html/body/div[1]/div[3]/div[1]/div[1]/div[2]/div[1]/div/div[2]/div[1]/div/div[1]/div[1]/div[1]/div[2]/div/div[1]/table/tbody/tr/td[2]/div");
@@ -75,4 +77,27 @@ public class TijdelijkeWijzigingen
     //Elementen in pop-up 'Werkelijk verwijderen?'
     public static int MaatregelVerwijderenX = 1100;
     public static int MaatregelVerwijderenY = 720;
+
+    //Elementen in pop-up 'Check maximaal toonbaar bereik'
+    public static By MaximaalKilometrageTekst = By.xpath("//*[@id='x-auto-8284']/tbody");
+
+    //Elementen in popup 'Exporteren'
+    public static By BestandsformaatDropdown = By.xpath("/html/body/div[6]/div[2]/div[1]/div/div/div/div/div[1]/div/div[2]/div[1]/form/div/table/tbody/tr/td/div/div/table/tbody/tr[2]/td/div/table/tbody/tr/td/div/div/div[1]/div/img");
+    public static By ExporterenOk = By.xpath("//button[contains(text(),'Ok')]");
+
+    public static int XlsX = 920;
+    public static int XlsY = 630;
+    public static int CsvX = 910;
+    public static int CsvY = 580;
+
+    //Elementen onder Filter
+    public static By FilterWegnummerDropdown = By.xpath("/html/body/div[1]/div[3]/div[1]/div[1]/div[2]/div[1]/div/div[2]/div[1]/div/div[2]/div[2]/div[1]/form/div/div[2]/div[1]/div/table/tbody/tr[1]/td/div/table/tbody/tr/td[1]/div/table/tbody/tr[1]/td/div/div/table/tbody/tr/td[4]/div/table/tbody/tr/td/div/div[1]/div[1]/div/img");
+    public static int FilterA12X = 200;
+    public static int FilterA12Y = 670;
+
+    public static By FilterWegzijdeDropdown = By.xpath("/html/body/div[1]/div[3]/div[1]/div[1]/div[2]/div[1]/div/div[2]/div[1]/div/div[2]/div[2]/div[1]/form/div/div[2]/div[1]/div/table/tbody/tr[1]/td/div/table/tbody/tr/td[1]/div/table/tbody/tr[1]/td/div/div/table/tbody/tr/td[4]/div/table/tbody/tr/td/div/div[2]/div[1]/div/img");
+    public static int FilterRechtsX = 200;
+    public static int FilterRechtsY = 530;
+
+    public static By FilterZoeken = By.xpath("/html/body/div[1]/div[3]/div[1]/div[1]/div[2]/div[1]/div/div[2]/div[1]/div/div[2]/div[2]/div[1]/form/div/div[2]/div[1]/div/table/tbody/tr[1]/td/div/table/tbody/tr/td[2]/div/div[1]/table/tbody/tr[2]/td[2]/em/button");
 }

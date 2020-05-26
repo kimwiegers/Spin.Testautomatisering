@@ -44,4 +44,32 @@
           En de medewerker volledig uitzoomt op de schematische kaart
           Dan blijft de juiste tijdelijke wijziging geselecteert
 
-      #ToDo Scenario: Ook volledig inzoomen
+    Scenario: foutpad - Begindatum na einddatum
+        Gegeven een medewerker met rechten van Lange Termijn Planner in SPIN
+        Als de medewerker inlogt op de 'interne GUI' van SPIN
+        En de medewerker een nieuwe tijdelijke wijziging opent
+        En de medewerker voert een begin- en einddatum in met dezelfde datum
+        Dan is de onjuiste begindatum met rood onderstreept
+
+      Scenario: foutpad - te hoge kilometrage invullen
+          Gegeven een medewerker met rechten van Lange Termijn Planner in SPIN
+          Als de medewerker inlogt op de 'interne GUI' van SPIN
+          En de medewerker een nieuwe tijdelijke wijziging opent
+          En de medewerker voert een te hoge kilometrage in voor de tijdelijke wijziging
+          Dan ziet de klant een pop-up met informatie over de kilometrage
+
+          #ToDo Xls versie nog maken
+      @ExportTijdelijkeWijziging
+      Abstract Scenario: Export van specifieke regio
+          Gegeven een medewerker met rechten van Lange Termijn Planner in SPIN
+          Als de medewerker inlogt op de 'interne GUI' van SPIN
+          En de medewerker maakt een nieuwe tijdelijke wijziging aan
+          En de medewerker een export van de tijdeljke wijzigingen maakt in '<format>'
+          Dan wordt een export gegenereerd in een '<format>' bestand
+          En zijn alleen de gefilterde tijdelijke wijzigingen meegenomen in de export
+
+    Voorbeelden:
+    |format|
+    |csv|
+    #|xls|
+

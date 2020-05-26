@@ -17,16 +17,15 @@ import static PageObjects.TijdelijkeWijzigingen.*;
 
 public class TijdelijkeWijzigingenService
 {
-    private final SeleniumService _enterData;
     private final WebDriver driver;
     private final SeleniumService _selenium;
 
-    public TijdelijkeWijzigingenService(SeleniumService enterdata, DriverSetup driverSetup, SeleniumService selenium)
+    public TijdelijkeWijzigingenService(DriverSetup driverSetup, SeleniumService selenium)
     {
-        _enterData = enterdata;
         driver = driverSetup.getDriver();
         _selenium = selenium;
     }
+
     public void OpenTijdelijkeWijzigingMenu()
     {
         Actions actions = new Actions(driver);
@@ -39,13 +38,34 @@ public class TijdelijkeWijzigingenService
                 .perform();
     }
 
-    public void VulVerplichteVeldenInVoorEenTijdelijkeWijziging() throws InterruptedException, AWTException {
+    public void OpenNieuweTijdelijkeWijziging()
+    {
         WebDriverWait wait = new WebDriverWait(driver, 10);
         wait.until(ExpectedConditions.elementToBeClickable(Nieuw));
-        Thread.sleep(1000);
         driver.findElement(Nieuw).click();
+    }
 
-        Thread.sleep(600);
+    public void VulVerplichteVeldenInVoorEenTijdelijkeWijziging() throws InterruptedException, AWTException
+    {
+        VulDetailsIn();
+        driver.findElement(ZoekLocatie).click();
+
+        _selenium.EnterDataInputField(RijstrokenNieuw, WegData.NieuweRijstrookData);
+        _selenium.EnterDataInputField(Signaalgevers, WegData.NieuweSignaalgevers);
+        _selenium.EnterDataInputField(Beschrijving, WegData.Beschrijving);
+
+        //Klik op de plus knop om portalen toe te voegen
+        _selenium.ClickOnElementBasedOnCoordinates(PortalenPlusKnopX, PortalenPlusKnopY);
+
+        //Klik op 'Ok' om het automatisch aangeboden portaal toe te voegen
+        _selenium.ClickOnElementBasedOnCoordinates(PortalenOkKnopX, PortalenOkKnopY);
+
+        driver.findElement(Actualiseren).click();
+    }
+
+    public void VulDetailsIn() throws AWTException, InterruptedException
+    {
+        Thread.sleep(1500);
         driver.findElement(DatumVanKalender).click();
         driver.findElement(VandaagInVanKalender).click();
 
@@ -61,22 +81,8 @@ public class TijdelijkeWijzigingenService
         _selenium.ClickOnElementBasedOnCoordinates(WegzijdeRechtsX, WegzijdeRechtsY);
 
         Thread.sleep(500);
-        _enterData.EnterDataInputField(VanKilometer, WegData.VanKilometer);
-        _enterData.EnterDataInputField(TotKilometer, WegData.TotKilometer);
-
-        driver.findElement(ZoekLocatie).click();
-
-        _selenium.EnterDataInputField(RijstrokenNieuw, WegData.NieuweRijstrookData);
-        _selenium.EnterDataInputField(Signaalgevers, WegData.NieuweSignaalgevers);
-        _selenium.EnterDataInputField(Beschrijving, WegData.Beschrijving);
-
-        //Klik op de plus knop om portalen toe te voegen
-        _selenium.ClickOnElementBasedOnCoordinates(PortalenPlusKnopX, PortalenPlusKnopY);
-
-        //Klik op 'Ok' om het automatisch aangeboden portaal toe te voegen
-        _selenium.ClickOnElementBasedOnCoordinates(PortalenOkKnopX, PortalenOkKnopY);
-
-        driver.findElement(Actualiseren).click();
+        _selenium.EnterDataInputField(VanKilometer, WegData.VanKilometer);
+        _selenium.EnterDataInputField(TotKilometer, WegData.TotKilometer);
     }
 
     public void WisIngevuldeVerplichteVeld(String verplichtVeld) throws Exception {
@@ -115,6 +121,7 @@ public class TijdelijkeWijzigingenService
 
         driver.findElement(Bewerken).click();
     }
+
     //ToDo dit in beforescenario dmv database delete
     public void VerwijderBestaandeTestWijzigingen() throws Exception
     {
@@ -127,19 +134,88 @@ public class TijdelijkeWijzigingenService
         Thread.sleep(1000);
         _selenium.ClickOnElementBasedOnCoordinates(DatumVanAflopendSorterenX, DatumVanAflopendSorterenY);
 
-        WebDriverWait wait = new WebDriverWait(driver, 10);
+        WebDriverWait wait = new WebDriverWait(driver, 15);
         wait.until(ExpectedConditions.elementToBeClickable(driver.findElement(EersteBestaandeTijdelijkeWijziging)));
         WebElement tijdelijkeWijziging = driver.findElement(EersteBestaandeTijdelijkeWijzigingNaam);
         String tijdelijkeWijzigingNaam = _selenium.GetTextFromElement(EersteBestaandeTijdelijkeWijzigingNaam);
         if (tijdelijkeWijzigingNaam.equals(WegData.TijdelijkeWijzigingNaam))
         {
             tijdelijkeWijziging.click();
+            Thread.sleep(500);
             driver.findElement(Verwijderen).click();
+            Thread.sleep(500);
             _selenium.ClickOnElementBasedOnCoordinates(MaatregelVerwijderenX, MaatregelVerwijderenY);
 
             //Klik op OK om de maatregelen te accepteren
-            Thread.sleep(1000);
+            Thread.sleep(1500);
             _selenium.ClickOnElementBasedOnCoordinates(BetrokkenMaatregelenAccepterenX, BetrokkenMaatregelenAccepterenY);
         }
+    }
+
+    public boolean VeldIsRoodOnderstreept(By elementname)
+    {
+        WebElement element = driver.findElement(elementname);
+        return element.getAttribute("class").contains("x-form-invalid");
+    }
+
+    public void FilterTijdelijkeWijzigingen(String wegnummer, String wegzijde) throws Exception
+    {
+        int wegnummerXcoordinaat;
+        int wegnummerYCoordinaat;
+        int wegzijdeXCoordinaat;
+        int wegzijdeYCoordinaat;
+
+        switch (wegnummer)
+        {
+            case "A12":
+                wegnummerXcoordinaat = FilterA12X;
+                wegnummerYCoordinaat = FilterA12Y;
+                break;
+            default:
+                throw new Exception(String.format("voor wegnummer %s is nog geen case geimplementeerd. Maak deze aub zelf aan.", wegnummer));
+        }
+
+        switch (wegzijde.toLowerCase())
+        {
+            case "re":
+                wegzijdeXCoordinaat = FilterRechtsX;
+                wegzijdeYCoordinaat = FilterRechtsY;
+                break;
+            default:
+                throw new Exception(String.format("voor wegzijde %s is nog geen case geimplementeerd. Maak deze aub zelf aan.", wegzijde));
+        }
+
+        driver.findElement(FilterWegnummerDropdown).click();
+
+        _selenium.ClickOnElementBasedOnCoordinates(wegnummerXcoordinaat, wegnummerYCoordinaat);
+
+        driver.findElement(FilterWegzijdeDropdown).click();
+
+        _selenium.ClickOnElementBasedOnCoordinates(wegzijdeXCoordinaat, wegzijdeYCoordinaat);
+
+        driver.findElement(FilterZoeken).click();
+    }
+
+    public void ExporteerTijdelijkeWijzigingen(String format) throws Exception
+    {
+        WebDriverWait wait = new WebDriverWait(driver, 10);
+
+        driver.findElement(Exporteren).click();
+        wait.until(ExpectedConditions.elementToBeClickable(BestandsformaatDropdown));
+        driver.findElement(BestandsformaatDropdown).click();
+
+        switch (format.toLowerCase())
+        {
+            case "xls":
+                _selenium.ClickOnElementBasedOnCoordinates(XlsX, XlsY);
+                break;
+            case "csv":
+                _selenium.ClickOnElementBasedOnCoordinates(CsvX, CsvY);
+                break;
+            default:
+                throw new Exception(String.format("%s niet geimplementeerd", format));
+        }
+
+        driver.findElement(ExporterenOk).click();
     }
 }

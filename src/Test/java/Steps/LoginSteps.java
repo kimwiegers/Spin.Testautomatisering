@@ -22,7 +22,8 @@ public class LoginSteps {
     }
 
     @cucumber.api.java.nl.Gegeven("een medewerker met rechten van Lange Termijn Planner in SPIN")
-    public void eenMedewerkerMetRechtenVanLangeTermijnPlannerInSPIN() {
+    public void eenMedewerkerMetRechtenVanLangeTermijnPlannerInSPIN()
+    {
         Gebruiker.setGebruikersnaam(Acceptatie.gebruikersnaam);
         Gebruiker.setWachtwoord(Acceptatie.wachtwoord);
     }
