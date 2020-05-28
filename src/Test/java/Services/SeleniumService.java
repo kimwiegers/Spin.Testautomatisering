@@ -1,7 +1,10 @@
 package Services;
 
+import PageObjects.Hoofdpagina;
 import TestData.DriverSetup;
+import TestData.TestData;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -106,6 +109,14 @@ public class SeleniumService
         robot.mouseRelease(InputEvent.BUTTON1_DOWN_MASK);
     }
 
+    public void ContextClickOnElementBasedOnCoordinates(int xCoordinate, int yCoordinate) throws AWTException
+    {
+        Robot robot = new Robot();
+        robot.mouseMove(xCoordinate, yCoordinate);
+        robot.mousePress(InputEvent.BUTTON3_DOWN_MASK);
+        robot.mouseRelease(InputEvent.BUTTON3_DOWN_MASK);
+    }
+
     public void WaitUntilClickableThenClick(By element)
     {
         WebDriverWait wait = new WebDriverWait(driver, 20);
@@ -116,5 +127,48 @@ public class SeleniumService
     {
         driver.manage().timeouts().implicitlyWait(
                 time, TimeUnit.SECONDS);
+    }
+
+    public boolean VeldIsRoodOnderstreept(By elementname) throws Exception
+    {
+        for (int i = 0; i < 15; i++)
+        {
+            WebElement element = driver.findElement(elementname);
+            boolean invalidElement = element.getAttribute("class").contains("x-form-invalid");
+
+            if (invalidElement)
+            {
+                return true;
+            }
+
+            Thread.sleep(1000);
+        }
+
+        throw new Exception("Element a 15 seconden nog niet met rood omlijnd");
+    }
+
+    public void SwitchToCurrentScreen()
+    {
+        for (String currentWindow : driver.getWindowHandles())
+            driver.switchTo().window(currentWindow);
+        driver.manage().window().setPosition(new org.openqa.selenium.Point(0, -5));
+        driver.manage().window().setSize(new Dimension(1920, 1080));
+    }
+
+    public boolean TextInElementMatchesExpectedText(By element, String ExpectedText) throws Exception
+    {
+        for (int i = 0; i < 5; i++)
+        {
+            String faseNaam = GetTextFromElement(element);
+            if (faseNaam.equals(ExpectedText))
+            {
+                return true;
+            }
+
+            Thread.sleep(1000);
+        }
+
+        return false;
+
     }
 }

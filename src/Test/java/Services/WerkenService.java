@@ -131,7 +131,7 @@ public class WerkenService
 
     private void BestaandWerkIsVerwijderd() throws Exception
     {
-        for (int i = 0; i < 15; i++)
+        for (int i = 0; i < 20; i++)
         {
             String korteProjectNaam = _selenium.GetTextFromElement(Hoofdpagina.KorteProjectNaam);
             if (!korteProjectNaam.equals(TestData.Testomschrijving))

@@ -24,6 +24,17 @@ public class Hoofdpagina {
     //Elementen in overzicht tabel
     public static By EersteWerkOpLaatstePagina = By.xpath("/html/body/div[1]/div[3]/div[2]/div/div[2]/div[2]/div[1]/div/div[1]/div[1]/div[2]/div/div[1]/table/tbody/tr/td[1]");
     public static By KorteProjectNaam = By.xpath("/html/body/div[1]/div[3]/div[2]/div/div[2]/div[2]/div[1]/div/div[1]/div[1]/div[2]/div/div[1]/table/tbody/tr/td[4]/div/span");
+    public static By FaseNaam = By.xpath("/html/body/div[1]/div[3]/div[2]/div/div[2]/div[2]/div[1]/div/div[1]/div[1]/div[2]/div/div[2]/table/tbody/tr/td[3]/div");
+    public static int FaseX = 200;
+    public static int FaseY = 30;
+
+    public static By KlapEersteWerkOpEerstePaginaOpen = By.xpath("/html/body/div[1]/div[3]/div[2]/div/div[2]/div[2]/div[1]/div/div[1]/div[1]/div[2]/div/div[1]/table/tbody/tr/td[1]/div/div/div/img[2]");
+    public static By EersteFaseOnderEersteWerkEerstePagina = By.xpath("/html/body/div[1]/div[3]/div[2]/div/div[2]/div[2]/div[1]/div/div[1]/div[1]/div[2]/div/div[2]/table/tbody/tr/td[1]/div/div/div/span[2]");
+
+
+    public static By KlapMaatregelInformatieOpen = By.xpath("/html/body/div[1]/div[3]/div[2]/div/div[2]/div[2]/div[1]/div/div[1]/div[1]/div[2]/div/div[2]/table/tbody/tr/td[1]/div/div/div/img[2]");
+    public static By MaatregelWegVan = By.xpath("/html/body/div[1]/div[3]/div[2]/div/div[2]/div[2]/div[1]/div/div[1]/div[1]/div[2]/div/div[3]/table/tbody/tr/td[12]/div");
+    public static By MaatregelSoortWerk = By.xpath("/html/body/div[1]/div[3]/div[2]/div/div[2]/div[2]/div[1]/div/div[1]/div[1]/div[2]/div/div[3]/table/tbody/tr/td[23]/div/span");
 
     public static By Opgeslagen = By.xpath("/html/body/div[1]/div[3]/div[2]/div/div[2]/div[2]/div[1]/div/div[1]/div[1]/div[1]/div[1]/div/div/table/tbody/tr/td[6]/div/span");
 

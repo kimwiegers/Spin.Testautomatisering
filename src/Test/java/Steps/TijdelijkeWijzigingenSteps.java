@@ -6,7 +6,6 @@ import Services.TijdelijkeWijzigingenService;
 import TestData.DriverSetup;
 import TestData.TestData;
 import TestData.WegData;
-import com.opencsv.exceptions.CsvException;
 import cucumber.api.java.nl.Dan;
 import cucumber.api.java.nl.En;
 import org.openqa.selenium.WebDriver;
@@ -16,8 +15,6 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.awt.*;
 import java.io.File;
-import java.io.IOException;
-import java.util.List;
 
 import static PageObjects.TijdelijkeWijzigingen.*;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -109,9 +106,9 @@ public class TijdelijkeWijzigingenSteps {
     }
 
     @Dan("zijn de onjuiste rijstrookgegevens met rood onderstreept")
-    public void zijnDeOnjuisteRijstrookgegevensMetRoodOnderstreept()
+    public void zijnDeOnjuisteRijstrookgegevensMetRoodOnderstreept() throws Exception
     {
-        assertThat(_tijdelijkeWijzigingenService.VeldIsRoodOnderstreept(RijstrokenNieuw)).isTrue();
+        assertThat(_selenium.VeldIsRoodOnderstreept(RijstrokenNieuw)).isTrue();
     }
 
     //Stappen bij testgeval 'Bestaande tijdelijke wijziging bewerken'
@@ -181,9 +178,9 @@ public class TijdelijkeWijzigingenSteps {
     }
 
     @Dan("is de onjuiste begindatum met rood onderstreept")
-    public void isDeOnjuisteBegindatumMetRoodOnderstreept()
+    public void isDeOnjuisteBegindatumMetRoodOnderstreept() throws Exception
     {
-        assertThat(_tijdelijkeWijzigingenService.VeldIsRoodOnderstreept(DatumVan)).isTrue();
+        assertThat(_selenium.VeldIsRoodOnderstreept(DatumVan)).isTrue();
     }
 
     //Stappen voor testgeval 'foutpad - te hoge kilometrage'

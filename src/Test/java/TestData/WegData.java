@@ -18,4 +18,11 @@ public class WegData
     public static String NieuweRijstrookData = "N=N=N=";
     public static String NieuweSignaalgevers = "N";
     public static String Beschrijving = "Test A12@$%^";
+
+    //Invuldata voor maatregel
+    public static String MaatregelSoortWerk = "asfalteringswerkzaamheden";
+    public static String Breedte = "15";
+
+    //Asserts
+    public static String GewijzigdeRouteTotKilometer = "46,573";
 }

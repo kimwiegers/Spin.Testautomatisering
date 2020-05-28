@@ -152,12 +152,6 @@ public class TijdelijkeWijzigingenService
         }
     }
 
-    public boolean VeldIsRoodOnderstreept(By elementname)
-    {
-        WebElement element = driver.findElement(elementname);
-        return element.getAttribute("class").contains("x-form-invalid");
-    }
-
     public void FilterTijdelijkeWijzigingen(String wegnummer, String wegzijde) throws Exception
     {
         int wegnummerXcoordinaat;
