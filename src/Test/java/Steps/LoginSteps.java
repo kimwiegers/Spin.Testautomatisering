@@ -2,6 +2,7 @@ package Steps;
 
 import Omgevingen.Acceptatie;
 import PageObjects.LoginPagina;
+import Services.SeleniumService;
 import TestData.GebruikersData;
 import TestData.DriverSetup;
 import cucumber.api.java.nl.Als;
@@ -15,10 +16,12 @@ public class LoginSteps {
     private GebruikersData Gebruiker;
     private WebDriver driver;
     private DriverSetup _driverSetup;
+    private final SeleniumService _selenium;
 
-    public LoginSteps(GebruikersData gebruiker, DriverSetup driverSetup){
+    public LoginSteps(GebruikersData gebruiker, DriverSetup driverSetup, SeleniumService selenium){
         Gebruiker = gebruiker;
         _driverSetup = driverSetup;
+        _selenium = selenium;
     }
 
     @cucumber.api.java.nl.Gegeven("een medewerker met rechten van Lange Termijn Planner in SPIN")
@@ -49,5 +52,7 @@ public class LoginSteps {
             default:
                 throw new Exception("'{gui}' is niet geimplementeerd als optie");
         }
+
+        _selenium.WaitUntilHomepageFullyLoaded();
     }
 }

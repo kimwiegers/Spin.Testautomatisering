@@ -30,7 +30,13 @@ public class Hoofdpagina {
 
     public static By KlapEersteWerkOpEerstePaginaOpen = By.xpath("/html/body/div[1]/div[3]/div[2]/div/div[2]/div[2]/div[1]/div/div[1]/div[1]/div[2]/div/div[1]/table/tbody/tr/td[1]/div/div/div/img[2]");
     public static By EersteFaseOnderEersteWerkEerstePagina = By.xpath("/html/body/div[1]/div[3]/div[2]/div/div[2]/div[2]/div[1]/div/div[1]/div[1]/div[2]/div/div[2]/table/tbody/tr/td[1]/div/div/div/span[2]");
-
+    public static int EersteFaseOnderEersteWerkEerstePaginaX = 200;
+    public static int EersteFaseOnderEersteWerkEerstePaginaY = 310;
+    public static By KlapEersteFaseOnderEersteWerkOpen = By.xpath("/html/body/div[1]/div[3]/div[2]/div/div[2]/div[2]/div[1]/div/div[1]/div[1]/div[2]/div/div[2]/table/tbody/tr/td[1]/div/div/div/img[2]");
+    public static int KlapEersteFaseOnderEersteWerkOpenX = 35;
+    public static int KlapEersteFaseOnderEersteWerkOpenY = 310;
+    public static int EersteMaatregelOnderEersteFaseX = 200;
+    public static int EersteMaatregelOnderEersteFaseY = 330;
 
     public static By KlapMaatregelInformatieOpen = By.xpath("/html/body/div[1]/div[3]/div[2]/div/div[2]/div[2]/div[1]/div/div[1]/div[1]/div[2]/div/div[2]/table/tbody/tr/td[1]/div/div/div/img[2]");
     public static By MaatregelWegVan = By.xpath("/html/body/div[1]/div[3]/div[2]/div/div[2]/div[2]/div[1]/div/div[1]/div[1]/div[2]/div/div[3]/table/tbody/tr/td[12]/div");
@@ -43,5 +49,6 @@ public class Hoofdpagina {
 
     //Elementen oder popup 'Werkelijk verwijderen'
     public static By BevestigVerwijderenWerk = By.xpath("/html/body/div[6]/div[2]/div[1]/div/div/div/div/div[2]/div/table[1]/tbody/tr[2]/td[2]/em/button");
+    public static By BevestigVerwijderenMaatregel = By.xpath("/html/body/div[6]/div[2]/div[1]/div/div/div/div/div[2]/div/table[1]/tbody/tr[2]/td[2]/em/button");
 
 }

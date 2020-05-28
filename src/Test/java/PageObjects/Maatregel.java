@@ -38,6 +38,8 @@ public class Maatregel
 
     public static By ToonRoute = By.xpath("//button[contains(text(),'Toon route')]");
 
+    public static By MaatregelInTijdvak = By.xpath("/html/body/div[1]/div[3]/div/div[2]/div[1]/div[2]/div[1]/form/div/div[1]/div[2]/div[1]/div/div/div/div[1]/table/tbody/tr/td[1]/div/table/tbody/tr[2]/td/div/table/tbody/tr/td[2]/div/table/tbody/tr[2]/td[2]/em/button");
+
     //Elementen onder Verkeer
     public static By Verkeershinderklasse = By.name("trafficHindranceClass");
     public static By VerkeershinderklasseDropdown = By.xpath("/html/body/div[1]/div[3]/div/div[2]/div[1]/div[2]/div[1]/form/div/div[2]/div[2]/div[1]/div/div/div/div/table/tbody/tr/td[1]/div/table/tbody/tr[1]/td/div/div[1]/div[1]/div/img");
@@ -73,4 +75,16 @@ public class Maatregel
     public static By EindPuntPlaatsen = By.xpath("/html/body/div[8]/div/div[8]/a");
 
     public static By LocatieOpslaan = By.xpath("/html/body/div[5]/div[2]/div[1]/div/div/div/div/div[2]/div/table[1]/tbody/tr[2]/td[2]/em/button");
+
+    //Elementen in popups na opslaan
+    public static By MaatregelBuitenTIjdvakFase = By.xpath("//button[contains(text(),'Ok')]");
+    public static By MaatregelDesondanksOpgeslagen = By.xpath("//button[contains(text(),'Ok')]");
+
+    //Elementen in popup 'Maatregel in tijdvak'
+    public static By MaatregelInTijdvakSluiten = By.xpath("/html/body/div[6]/div[2]/div[1]/div/div/div/div/div[2]/div/table[2]/tbody/tr[2]/td[2]/em/button");
+    public static By BekijkMaatregel = By.xpath("/html/body/div[6]/div[2]/div[1]/div/div/div/div/div[1]/div[1]/div[2]/div[1]/div/div[1]/div[1]/div[2]/div/div[1]/table/tbody/tr/td[7]");
+
+    public static By WegnummerConflict = By.xpath("/html/body/div[6]/div[2]/div[1]/div/div/div/div/div[1]/div[2]/div[2]/div[1]/div/div[1]/div[2]/div[1]/form/div/table/tbody/tr/td/div/table/tbody/tr/td[2]/div/div/table/tbody/tr[1]/td/div/div/table/tbody/tr/td[2]/div/table/tbody/tr[2]/td/div/table/tbody/tr/td/div/div[1]/div[1]/div/input");
+    public static By WegzijdeConflict = By.xpath("/html/body/div[6]/div[2]/div[1]/div/div/div/div/div[1]/div[2]/div[2]/div[1]/div/div[1]/div[2]/div[1]/form/div/table/tbody/tr/td/div/table/tbody/tr/td[2]/div/div/table/tbody/tr[1]/td/div/div/table/tbody/tr/td[2]/div/table/tbody/tr[2]/td/div/table/tbody/tr/td/div/div[2]/div[1]/div/input");
+    public static By VanKilometerConflict = By.xpath("/html/body/div[6]/div[2]/div[1]/div/div/div/div/div[1]/div[2]/div[2]/div[1]/div/div[1]/div[2]/div[1]/form/div/table/tbody/tr/td/div/table/tbody/tr/td[2]/div/div/table/tbody/tr[1]/td/div/div/table/tbody/tr/td[2]/div/table/tbody/tr[2]/td/div/table/tbody/tr/td/div/div[3]/div[1]/div/input");
 }

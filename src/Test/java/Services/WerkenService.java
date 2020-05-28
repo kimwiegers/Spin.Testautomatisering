@@ -121,14 +121,6 @@ public class WerkenService
         return driver.findElement(Hoofdpagina.KorteProjectNaam);
     }
 
-    public void WaitUntilHomepageFullyLoaded()
-    {
-        driver.manage().timeouts().implicitlyWait(
-                90, TimeUnit.SECONDS);
-        driver.findElement(By.xpath("/html[1]/body[1]/div[1]/div[3]/div[2]/div[1]/div[2]/div[2]/div[1]/div[1]/div[1]/div[1]/div[2]/div[1]/div[1]/table[1]/tbody[1]/tr[1]/td[2]/div[1]"));
-
-    }
-
     private void BestaandWerkIsVerwijderd() throws Exception
     {
         for (int i = 0; i < 20; i++)

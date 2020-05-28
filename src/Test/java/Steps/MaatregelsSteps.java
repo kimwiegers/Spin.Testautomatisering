@@ -15,11 +15,15 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 
+import java.awt.*;
+
+import static PageObjects.Maatregel.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class MaatregelsSteps
 {
     private final WebDriver driver;
+    private final Actions actions;
     private final WerkenService _werkenService;
     private final FasenService _fasenService;
     private final MaatregelenService _maatregelenService;
@@ -33,12 +37,13 @@ public class MaatregelsSteps
         _fasenService = fasenService;
         _maatregelenService = maatregelenService;
         _selenium = selenium;
+        actions = new Actions(driver);
     }
 
     @En("de medewerker maakt een nieuwe maatregel aan")
     public void deMedewerkerMaaktEenNieuweMaatregelAan() throws Exception
     {
-        _werkenService.WaitUntilHomepageFullyLoaded();
+        _selenium.WaitUntilHomepageFullyLoaded();
 
         _selenium.SetNewImplicitWaitTime(30);
 
@@ -70,44 +75,82 @@ public class MaatregelsSteps
     }
 
     //Stappen voor testgeval 'Route aanpassen bestaande maatregel'
-    @En("de medewerker opent een bestaande maatregel")
-    public void deMedewerkerOpentEenBestaandeMaatregel() throws InterruptedException
+    @En("de medewerker creeert een maatregel onder een bestaande fase")
+    public void deMedewerkerCreeertEenMaatregelOnderEenBestaandeFase() throws Exception
     {
-        _werkenService.WaitUntilHomepageFullyLoaded();
-
-        _selenium.WaitUntilClickableThenClick(Hoofdpagina.KlapEersteWerkOpEerstePaginaOpen);
-
-        WebElement fase = driver.findElement(Hoofdpagina.EersteFaseOnderEersteWerkEerstePagina);
-
-        _maatregelenService.OpenNieuweMaatregelOnderbestaandeFase(fase);
+        _maatregelenService.OpenNieuweMaatregelOnderbestaandeFase();
     }
 
     @En("de medewerker past de route handmatig aan")
     public void deMedewerkerPastDeRouteHandmatigAan() throws Exception
     {
+        _maatregelenService.WaitUntilMaatregelPageLoaded();
         _maatregelenService.VulRouteIn();
-        _selenium.WaitUntilClickableThenClick(Maatregel.ToonRoute);
+        _selenium.WaitUntilClickableThenClick(ToonRoute);
 
         //_selenium.SwitchToCurrentScreen();
-        _selenium.WaitUntilClickableThenClick(Maatregel.LocatieBewerkenVanWegnummer);
+        _selenium.WaitUntilClickableThenClick(LocatieBewerkenVanWegnummer);
 
-        _selenium.WaitUntilClickableThenClick(Maatregel.ZoomOut);
+        _selenium.WaitUntilClickableThenClick(ZoomOut);
 
         Thread.sleep(1000);
         _selenium.ContextClickOnElementBasedOnCoordinates(1300, 570);
 
-        driver.findElement(Maatregel.EindPuntPlaatsen).click();
+        driver.findElement(EindPuntPlaatsen).click();
         Actions actions = new Actions(driver);
         actions.sendKeys(Keys.chord(Keys.ARROW_DOWN, Keys.ENTER)).perform();
 
-        driver.findElement(Maatregel.LocatieOpslaan).click();
+        driver.findElement(LocatieOpslaan).click();
     }
 
     @Dan("worden de wijzigingen automatisch toegapast op de routedata")
     public void wordenDeWijzigingenAutomatischToegapastOpDeRoutedata() throws Exception
     {
-        Boolean TextInElementMatchesExpectedText = _selenium.TextInElementMatchesExpectedText(Maatregel.TotKilometer, WegData.GewijzigdeRouteTotKilometer);
+        Boolean TextInElementMatchesExpectedText = _selenium.TextInElementMatchesExpectedText(TotKilometer, WegData.GewijzigdeRouteTotKilometer);
 
         assertThat(TextInElementMatchesExpectedText).isTrue();
+    }
+
+    //Teststappen onder 'Conflict getoond met andere maatregel'
+    @En("de medewerker maakt een nieuwe maatregel aan met hetzelfde tijdvak als een bestaande maatregel")
+    public void deMedewerkerMaaktEenNieuweMaatregelAanMetHetzelfdeTijdvakAlsEenBestaandeMaatregel() throws Exception
+    {
+        _selenium.WaitUntilClickableThenClick(Hoofdpagina.KlapEersteWerkOpEerstePaginaOpen);
+        _maatregelenService.OpenNieuweMaatregelOnderbestaandeFase();
+
+        _maatregelenService.MaakNieuweMaatregelAan();
+
+        _maatregelenService.OpenNieuweMaatregelOnderbestaandeFase();
+
+        _maatregelenService.EnterTijdvakData();
+        _maatregelenService.VulRouteIn();
+    }
+
+    @En("de medewerker bekijkt de maatregelen in hetzelfde tijdvak")
+    public void deMedewerkerBekijktDeMaatregelenInHetzelfdeTijdvak() throws InterruptedException
+    {
+        //data wordt alleen de tweede keer van openen getoond...
+        _selenium.WaitUntilClickableThenClick(MaatregelInTijdvak);
+        _selenium.WaitUntilClickableThenClick(MaatregelInTijdvakSluiten);
+        _selenium.WaitUntilClickableThenClick(MaatregelInTijdvak);
+
+        WebElement bekijkMaatregel = driver.findElement(BekijkMaatregel);
+        actions.contextClick(bekijkMaatregel).perform();
+        actions.sendKeys(Keys.chord(Keys.ARROW_DOWN, Keys.ENTER)).perform();
+    }
+
+    @Dan("ziet de medewerker dat er een conflict is met een andere maatregel in hetzelfde tijdvak")
+    public void zietDeMedewerkerDatErEenConflictIsMetEenAndereMaatregelInHetzelfdeTijdvak() throws Exception
+    {
+        _selenium.WaitUntilClickableThenClick(WegnummerConflict);
+
+        String wegnummer = _selenium.GetTextFromElement(WegnummerConflict);
+        assertThat(wegnummer).matches(WegData.Wegnummer);
+
+        String wegzijde = _selenium.GetTextFromElement(WegzijdeConflict);
+        assertThat(wegzijde).matches(WegData.Wegzijde);
+
+        String vanKilometer = _selenium.GetTextFromElement(VanKilometerConflict);
+        assertThat(vanKilometer).matches(WegData.VanKilometer);
     }
 }

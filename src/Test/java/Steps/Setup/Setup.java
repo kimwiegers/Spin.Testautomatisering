@@ -53,12 +53,4 @@ public class Setup {
             }
         }
     }
-
-    @After
-    public void CloseBrowser() {
-        {
-            driver = _driverSetup.getDriver();
-            driver.quit();
-        }
-    }
 }
