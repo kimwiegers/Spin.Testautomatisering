@@ -19,13 +19,14 @@ public class Teardown
         _maatregelenService = maatregelenService;
     }
 
-    @After(value = "@MaatregelOnderBestaandeFase", order = 0)
+    @After(value = "@MaatregelOnderBestaandeFase", order=1)
     public void VerwijderTestMaatregel() throws InterruptedException, AWTException
     {
         _maatregelenService.VerwijderTestMaatregel();
+        driver.quit();
     }
 
-    @After(order = 1)
+    @After(order=0)
     public void CloseBrowser() {
         {
             driver.quit();

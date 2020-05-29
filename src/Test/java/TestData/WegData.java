@@ -23,6 +23,13 @@ public class WegData
     public static String MaatregelSoortWerk = "asfalteringswerkzaamheden";
     public static String Breedte = "15";
 
+    public static String AantalWISAangevraagd = "0";
+
+    //Data voor standaard omleidingen
+    public static String OmleidingTotKilometer = "45,557";
+    public static String OmleidingVanPlek = "Den Haag";
+    public static String OmleidingTotPlek = "Nieuwerbrug";
+
     //Asserts
     public static String GewijzigdeRouteTotKilometer = "46,573";
 }

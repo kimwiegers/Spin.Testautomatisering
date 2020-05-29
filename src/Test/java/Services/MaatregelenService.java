@@ -44,11 +44,13 @@ public class MaatregelenService
 
     public void VerwijderTestMaatregel() throws AWTException, InterruptedException
     {
+        _selenium.WaitUntilClickableThenClick(Sluiten);
         _selenium.SetNewImplicitWaitTime(5);
-        driver.findElement(Hoofdpagina.KlapEersteFaseOnderEersteWerkOpen).click();
         Thread.sleep(1000);
+        _selenium.SwitchToCurrentScreen();
             _selenium.ClickOnElementBasedOnCoordinates(Hoofdpagina.KlapEersteFaseOnderEersteWerkOpenX, Hoofdpagina.KlapEersteFaseOnderEersteWerkOpenY);
             _selenium.ContextClickOnElementBasedOnCoordinates(Hoofdpagina.EersteMaatregelOnderEersteFaseX, Hoofdpagina.EersteMaatregelOnderEersteFaseY);
+            Thread.sleep(500);
             Actions actions = new Actions(driver);
             actions.sendKeys(Keys.chord(Keys.ARROW_DOWN, Keys.ARROW_DOWN, Keys.ARROW_DOWN, Keys.ARROW_DOWN, Keys.ARROW_DOWN,
                     Keys.ARROW_DOWN, Keys.ARROW_DOWN, Keys.ARROW_DOWN, Keys.ARROW_DOWN, Keys.ENTER)).perform();
@@ -60,6 +62,7 @@ public class MaatregelenService
     {
         _selenium.SwitchToCurrentScreen();
 
+        Thread.sleep(1000);
         _selenium.ContextClickOnElementBasedOnCoordinates(Hoofdpagina.EersteFaseOnderEersteWerkEerstePaginaX,Hoofdpagina.EersteFaseOnderEersteWerkEerstePaginaY);
         Actions actions = new Actions(driver);
         actions.sendKeys(Keys.chord(Keys.ARROW_DOWN, Keys.ARROW_DOWN, Keys.ARROW_DOWN, Keys.ARROW_DOWN,
