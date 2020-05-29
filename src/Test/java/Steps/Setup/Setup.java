@@ -1,12 +1,24 @@
 package Steps.Setup;
 
+import Omgevingen.Acceptatie;
+import PageObjects.LoginPagina;
+import PageObjects.TijdelijkeWijzigingen;
 import Services.*;
 import TestData.DriverSetup;
+import TestData.GebruikersData;
+import TestData.WegData;
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.io.File;
+import java.util.concurrent.TimeUnit;
 
 
 public class Setup {
@@ -28,12 +40,17 @@ public class Setup {
         _driverSetup.setDriver(driver);
     }
 
-
-    @After
-    public void CloseBrowser() {
+    @Before("@ExportTijdelijkeWijziging")
+    public void DeleteTestRecords()
+    {
+        File[] files = new File(GebruikersData.DownloadFolder).listFiles();
+        for (File file : files)
         {
-            driver = _driverSetup.getDriver();
-            driver.quit();
+            String name = file.getName();
+            if (name.contains("Tijdelijke_Wijzigingen"))
+            {
+                file.delete();
+            }
         }
     }
 }

@@ -2,6 +2,7 @@ package TestData;
 
 public class GebruikersData
 {
+    public static String DownloadFolder = "C:\\Users\\rws\\Downloads";
 
     private String gebruikersnaam;
     private String wachtwoord;
