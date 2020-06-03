@@ -28,7 +28,13 @@ public class WegData
     //Data voor standaard omleidingen
     public static String OmleidingTotKilometer = "45,557";
     public static String OmleidingVanPlek = "Den Haag";
-    public static String OmleidingTotPlek = "Nieuwerbrug";
+    public static String OmleidingTotPlek = "Oudenrijn";
+
+    public static String BLokkadeVanKilometer = "44,000";
+    public static String BlokkadeTotKilometer = "44,500";
+
+    public static String StandaardOmleidingVankilometer = "30,000";
+    public static String StandaardOmleidingTotKilometer = "60,000";
 
     //Asserts
     public static String GewijzigdeRouteTotKilometer = "46,573";

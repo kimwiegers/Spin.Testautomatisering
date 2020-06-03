@@ -16,13 +16,17 @@ import java.awt.*;
 import java.awt.event.InputEvent;
 import java.util.concurrent.TimeUnit;
 
+import static PageObjects.StandaardOmleidingen.FilterOmleidingWegnummerDropdown;
+
 public class SeleniumService
 {
     private final WebDriver driver;
+    private final Actions actions;
 
     public SeleniumService(DriverSetup driverSetup)
     {
         driver = driverSetup.getDriver();
+        actions =  new Actions(driver);
     }
 
     public void EnterDataInputField(By elementName, String input)
@@ -101,6 +105,18 @@ public class SeleniumService
         throw new Exception("Het element is na 15 seconden nog steeds disabled");
     }
 
+    public boolean isAttributePresent(WebElement element, String attribute)
+    {
+        try {
+            String value = element.getAttribute(attribute);
+            if (value != null){
+               return true;
+            }
+        } catch (Exception e) {}
+
+        return false;
+    }
+
     public void ClickOnElementBasedOnCoordinates(int xCoordinate, int yCoordinate) throws AWTException
     {
         Robot robot = new Robot();
@@ -156,12 +172,12 @@ public class SeleniumService
         driver.manage().window().setSize(new Dimension(1920, 1080));
     }
 
-    public boolean TextInElementMatchesExpectedText(By element, String ExpectedText) throws Exception
+    public boolean TextInElementContainsExpectedText(By element, String ExpectedText) throws Exception
     {
         for (int i = 0; i < 5; i++)
         {
             String faseNaam = GetTextFromElement(element);
-            if (faseNaam.equals(ExpectedText))
+            if (faseNaam.contains(ExpectedText))
             {
                 return true;
             }
@@ -178,5 +194,18 @@ public class SeleniumService
                 90, TimeUnit.SECONDS);
         driver.findElement(By.xpath("/html[1]/body[1]/div[1]/div[3]/div[2]/div[1]/div[2]/div[2]/div[1]/div[1]/div[1]/div[1]/div[2]/div[1]/div[1]/table[1]/tbody[1]/tr[1]/td[2]/div[1]"));
 
+    }
+
+    public void SelectFromDropdown(By element, int arrowDownNumberOfTimes)
+    {
+        WaitUntilClickableThenClick(element);
+
+        for (int i = 0; i < arrowDownNumberOfTimes; i++)
+        {
+            actions.sendKeys(Keys.ARROW_DOWN).perform();
+        }
+
+        actions.sendKeys(Keys.ENTER).perform();
+        actions.sendKeys(Keys.TAB).perform();
     }
 }

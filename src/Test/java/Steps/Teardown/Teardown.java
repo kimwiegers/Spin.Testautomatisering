@@ -3,7 +3,6 @@ package Steps.Teardown;
 import Services.MaatregelenService;
 import TestData.DriverSetup;
 import cucumber.api.java.After;
-import cucumber.api.java.Before;
 import org.openqa.selenium.WebDriver;
 
 import java.awt.*;
@@ -19,10 +18,17 @@ public class Teardown
         _maatregelenService = maatregelenService;
     }
 
-    @After(value = "@MaatregelOnderBestaandeFase", order=1)
-    public void VerwijderTestMaatregel() throws InterruptedException, AWTException
+    @After(value = "@TestMaatregelVerwijderen", order=2)
+    public void VerwijderNieuweTestMaatregel() throws InterruptedException, AWTException
     {
-        _maatregelenService.VerwijderTestMaatregel();
+        _maatregelenService.VerwijderBestaandeTestMaatregel();
+        driver.quit();
+    }
+
+    @After(value = "@MaatregelOnderBestaandeFase", order=1)
+    public void VerwijderBestaandeTestMaatregel() throws InterruptedException, AWTException
+    {
+        _maatregelenService.VerwijderBestaandeTestMaatregel();
         driver.quit();
     }
 

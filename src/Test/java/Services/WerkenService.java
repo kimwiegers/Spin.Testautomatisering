@@ -45,6 +45,7 @@ public class WerkenService
 
         _selenium.EnterDataInputField(Werk.Werkzaamheden, TestData.Testomschrijving);
 
+        Thread.sleep(1000);
         driver.findElement(Werk.OpenBesteknummers).click();
         driver.findElement(Werk.EersteBesteknummer).click();
         driver.findElement(Werk.VoegBesteknummerToe).click();

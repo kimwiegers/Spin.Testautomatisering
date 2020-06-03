@@ -218,17 +218,17 @@ public class TijdelijkeWijzigingenSteps {
     @Dan("wordt een export gegenereerd in een {string} bestand")
     public void wordtEenExportGegenereerdInEenFormatBestand(String format) throws Exception
     {
-        File tijdelijkeWijzigingenExport = new FileService().GetExportedFile();
+        File tijdelijkeWijzigingenExport = new FileService().GetExportedFile("Tijdelijke_Wijzigingen");
         String filename = tijdelijkeWijzigingenExport.getName();
         assertThat(filename).contains(format.toLowerCase());
 
-        _testdata.setTijdelijkeWijzigingExportbestand(tijdelijkeWijzigingenExport);
+        _testdata.setExportbestand(tijdelijkeWijzigingenExport);
     }
 
     @En("zijn alleen de gefilterde tijdelijke wijzigingen meegenomen in de export")
     public void zijnAlleenDeGefilterdeTijdelijkeWijzigingenMeegenomenInDeExport() throws Exception
     {
-        File tijdelijkeWijzigingenExport = _testdata.getTijdelijkeWijzigingExportbestand();
+        File tijdelijkeWijzigingenExport = _testdata.getExportbestand();
         String filename = tijdelijkeWijzigingenExport.getName();
 
         String tijdelijkeWijzigingData = String.format("%s %s", WegData.Wegnummer, WegData.Wegzijde);

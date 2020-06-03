@@ -42,7 +42,7 @@ public class MaatregelenService
         WaitUntilMaatregelPageLoaded();
     }
 
-    public void VerwijderTestMaatregel() throws AWTException, InterruptedException
+    public void VerwijderBestaandeTestMaatregel() throws AWTException, InterruptedException
     {
         _selenium.WaitUntilClickableThenClick(Sluiten);
         _selenium.SetNewImplicitWaitTime(5);
@@ -62,7 +62,7 @@ public class MaatregelenService
     {
         _selenium.SwitchToCurrentScreen();
 
-        Thread.sleep(1000);
+        Thread.sleep(1300);
         _selenium.ContextClickOnElementBasedOnCoordinates(Hoofdpagina.EersteFaseOnderEersteWerkEerstePaginaX,Hoofdpagina.EersteFaseOnderEersteWerkEerstePaginaY);
         Actions actions = new Actions(driver);
         actions.sendKeys(Keys.chord(Keys.ARROW_DOWN, Keys.ARROW_DOWN, Keys.ARROW_DOWN, Keys.ARROW_DOWN,
@@ -94,7 +94,10 @@ public class MaatregelenService
         {
             driver.findElement(MaatregelDesondanksOpgeslagen).click();
         }
+    }
 
+    public void SluitNieuweBewaardeMaatregel() throws Exception
+    {
         _selenium.WaitUntilElementIsEnabled(Sluiten);
         _selenium.WaitUntilClickableThenClick(Sluiten);
     }
@@ -184,5 +187,43 @@ public class MaatregelenService
 
         _selenium.EnterDataInputField(VanKilometer, WegData.VanKilometer);
         _selenium.EnterDataInputField(TotKilometer, WegData.TotKilometer);
+    }
+
+    public void AddStandaardOmleidingTomaatregel() throws Exception
+    {
+        WaitUntilMaatregelPageLoaded();
+        _selenium.SetNewImplicitWaitTime(15);
+
+        VulRouteIn();
+        Thread.sleep(1000);
+
+        _selenium.WaitUntilClickableThenClick(OmleidingTabblad);
+        _selenium.WaitUntilClickableThenClick(OmleidingToevoegen);
+
+        //Je moet nu switchen tussen zoekopties voordat je daadwerkelijke resultaten ziet = bug
+        _selenium.WaitUntilClickableThenClick(BlokkadeLocatie);
+        Thread.sleep(500);
+        _selenium.WaitUntilClickableThenClick(StandaardOmleidingRaakvlak);
+        Thread.sleep(500);
+
+        _selenium.SelectFromDropdown(StandaardOmleidingWegnummerDropdown, 9);
+        _selenium.SelectFromDropdown(StandaardOmleidingWegzijdeDropdown, 1);
+        _selenium.EnterDataInputField(StandaardOmleidingVanKilometer, WegData.StandaardOmleidingVankilometer);
+        _selenium.EnterDataInputField(StandaardOmleidingTotKilometer, WegData.StandaardOmleidingTotKilometer);
+        _selenium.WaitUntilElementIsEnabled(StandaardOmleidingZoeken);
+        _selenium.WaitUntilClickableThenClick(StandaardOmleidingZoeken);
+
+        _selenium.WaitUntilClickableThenClick(GevondenStandaardOmleiding);
+        _selenium.WaitUntilElementIsEnabled(StandaardOmleidingGebruiken);
+        _selenium.WaitUntilClickableThenClick(StandaardOmleidingGebruiken);
+
+        _selenium.WaitUntilClickableThenClick(SoortRouteAdviesroute);
+        _selenium.EnterDataInputField(OmleidingAanmakenVolgRoute, TestData.Testomschrijving);
+
+        _selenium.WaitUntilElementIsEnabled(OmleidingToepassen);
+        _selenium.WaitUntilClickableThenClick(OmleidingToepassen);
+
+        _selenium.WaitUntilElementIsEnabled(OmleidingSluiten);
+        _selenium.WaitUntilClickableThenClick(OmleidingSluiten);
     }
 }
