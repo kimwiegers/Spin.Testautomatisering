@@ -1,7 +1,6 @@
 package Services;
 
 import PageObjects.Hoofdpagina;
-import PageObjects.Maatregel;
 import TestData.DriverSetup;
 import TestData.TestData;
 import TestData.WegData;
@@ -9,7 +8,6 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 
 import java.awt.*;
-import java.util.List;
 
 import static PageObjects.Maatregel.*;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -19,15 +17,17 @@ public class MaatregelenService
 
     private final SeleniumService _selenium;
     private final WebDriver driver;
+    private final DatesAndTimesService _datesAndTimesService;
 
-    public MaatregelenService(SeleniumService selenium, DriverSetup driverSetup)
+    public MaatregelenService(SeleniumService selenium, DriverSetup driverSetup, DatesAndTimesService datesAndTimesService)
     {
         driver = driverSetup.getDriver();
         _selenium = selenium;
+        _datesAndTimesService = datesAndTimesService;
     }
 
 
-    public void OpenNieuweMaatregel(WebElement fase) throws Exception
+    public void OpenNieuweMaatregel() throws Exception
     {
         Actions actions = new Actions(driver);
         actions.moveByOffset(Hoofdpagina.FaseX, Hoofdpagina.FaseY).perform();
@@ -42,7 +42,7 @@ public class MaatregelenService
         WaitUntilMaatregelPageLoaded();
     }
 
-    public void VerwijderTestMaatregel() throws AWTException, InterruptedException
+    public void VerwijderBestaandeTestMaatregel() throws AWTException, InterruptedException
     {
         _selenium.WaitUntilClickableThenClick(Sluiten);
         _selenium.SetNewImplicitWaitTime(5);
@@ -62,7 +62,7 @@ public class MaatregelenService
     {
         _selenium.SwitchToCurrentScreen();
 
-        Thread.sleep(1000);
+        Thread.sleep(1300);
         _selenium.ContextClickOnElementBasedOnCoordinates(Hoofdpagina.EersteFaseOnderEersteWerkEerstePaginaX,Hoofdpagina.EersteFaseOnderEersteWerkEerstePaginaY);
         Actions actions = new Actions(driver);
         actions.sendKeys(Keys.chord(Keys.ARROW_DOWN, Keys.ARROW_DOWN, Keys.ARROW_DOWN, Keys.ARROW_DOWN,
@@ -74,9 +74,10 @@ public class MaatregelenService
         WaitUntilMaatregelPageLoaded();
     }
 
-    public void MaakNieuweMaatregelAan() throws Exception
+    public void MaakNieuweMaatregelAan(int begindatumAantalDagenVanafVandaag,
+                                       int einddatumAantalDagenVanafVandaag) throws Exception
     {
-        EnterMaatregelData();
+        EnterMaatregelData(begindatumAantalDagenVanafVandaag, einddatumAantalDagenVanafVandaag);
 
         Thread.sleep(3000);
         _selenium.WaitUntilElementIsEnabled(Bewaren);
@@ -94,14 +95,17 @@ public class MaatregelenService
         {
             driver.findElement(MaatregelDesondanksOpgeslagen).click();
         }
+    }
 
+    public void SluitNieuweBewaardeMaatregel() throws Exception
+    {
         _selenium.WaitUntilElementIsEnabled(Sluiten);
         _selenium.WaitUntilClickableThenClick(Sluiten);
     }
 
-    public void EnterMaatregelData() throws Exception
+    public void EnterMaatregelData(int begindatumAantalDagenVanafVandaag, int einddatumAantalDagenVanafVandaag) throws Exception
     {
-        EnterTijdvakData();
+        EnterTijdvakData(begindatumAantalDagenVanafVandaag, einddatumAantalDagenVanafVandaag);
 
         Actions actions = new Actions(driver);
 
@@ -144,13 +148,13 @@ public class MaatregelenService
         driver.findElement(OpmerkingToevoegenOk).click();
     }
 
-    public void EnterTijdvakData()
+    public void EnterTijdvakData(int aantalDagenVanafVandaagBegindatum, int aantalDagenVanafVandaagEinddatum)
     {
-        _selenium.WaitUntilClickableThenClick(Startdatum);
-        _selenium.WaitUntilClickableThenClick(VandaagInVanKalender);
+        String begindatum = _datesAndTimesService.GetDatumFormatInvoerveld(aantalDagenVanafVandaagBegindatum);
+        String einddatum = _datesAndTimesService.GetDatumFormatInvoerveld(aantalDagenVanafVandaagEinddatum);
+        _selenium.EnterDataInputField(BegindatumInputfield, begindatum);
 
-        String datum = new DatesAndTimesService().GetDatumInToekomstFormatInvoerveld(7);
-        _selenium.EnterDataInputField(EinddatumInputfield, datum);
+        _selenium.EnterDataInputField(EinddatumInputfield, einddatum);
     }
 
     public void WaitUntilMaatregelPageLoaded() throws Exception
@@ -184,5 +188,43 @@ public class MaatregelenService
 
         _selenium.EnterDataInputField(VanKilometer, WegData.VanKilometer);
         _selenium.EnterDataInputField(TotKilometer, WegData.TotKilometer);
+    }
+
+    public void AddStandaardOmleidingTomaatregel() throws Exception
+    {
+        WaitUntilMaatregelPageLoaded();
+        _selenium.SetNewImplicitWaitTime(15);
+
+        VulRouteIn();
+        Thread.sleep(1000);
+
+        _selenium.WaitUntilClickableThenClick(OmleidingTabblad);
+        _selenium.WaitUntilClickableThenClick(OmleidingToevoegen);
+
+        //Je moet nu switchen tussen zoekopties voordat je daadwerkelijke resultaten ziet = bug
+        _selenium.WaitUntilClickableThenClick(BlokkadeLocatie);
+        Thread.sleep(500);
+        _selenium.WaitUntilClickableThenClick(StandaardOmleidingRaakvlak);
+        Thread.sleep(500);
+
+        _selenium.SelectFromDropdown(StandaardOmleidingWegnummerDropdown, 9);
+        _selenium.SelectFromDropdown(StandaardOmleidingWegzijdeDropdown, 1);
+        _selenium.EnterDataInputField(StandaardOmleidingVanKilometer, WegData.StandaardOmleidingVankilometer);
+        _selenium.EnterDataInputField(StandaardOmleidingTotKilometer, WegData.StandaardOmleidingTotKilometer);
+        _selenium.WaitUntilElementIsEnabled(StandaardOmleidingZoeken);
+        _selenium.WaitUntilClickableThenClick(StandaardOmleidingZoeken);
+
+        _selenium.WaitUntilClickableThenClick(GevondenStandaardOmleiding);
+        _selenium.WaitUntilElementIsEnabled(StandaardOmleidingGebruiken);
+        _selenium.WaitUntilClickableThenClick(StandaardOmleidingGebruiken);
+
+        _selenium.WaitUntilClickableThenClick(SoortRouteAdviesroute);
+        _selenium.EnterDataInputField(OmleidingAanmakenVolgRoute, TestData.Testomschrijving);
+
+        _selenium.WaitUntilElementIsEnabled(OmleidingToepassen);
+        _selenium.WaitUntilClickableThenClick(OmleidingToepassen);
+
+        _selenium.WaitUntilElementIsEnabled(OmleidingSluiten);
+        _selenium.WaitUntilClickableThenClick(OmleidingSluiten);
     }
 }

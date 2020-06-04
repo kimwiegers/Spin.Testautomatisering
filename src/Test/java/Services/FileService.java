@@ -22,7 +22,7 @@ public class FileService
         return csvReader.readAll();
     }
 
-    public File GetExportedFile() throws Exception
+    public File GetExportedFile(String filename) throws Exception
     {
         for (int i = 0; i < 12; i++)
         {
@@ -31,7 +31,7 @@ public class FileService
             {
                 for (File file : files)
                 {
-                    if (file.getName().contains("Tijdelijke_Wijziging"))
+                    if (file.getName().contains(filename))
                     {
                         return file;
                     }

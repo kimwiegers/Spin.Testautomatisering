@@ -7,7 +7,8 @@ public class TestData
     public static String Testomschrijving = "Testautomation Test";
 
     private String tijdelijkeWijzigingNaam;
-    private File tijdelijkeWijzigingExportbestand;
+    private File Exportbestand;
+    private String Regio;
 
     public void setTijdelijkeWijzigingNaam(String tijdelijkeWijzigingNaam){
         this.tijdelijkeWijzigingNaam = tijdelijkeWijzigingNaam;
@@ -17,12 +18,22 @@ public class TestData
         return this.tijdelijkeWijzigingNaam;
     }
 
-    public void setTijdelijkeWijzigingExportbestand(File TijdelijkeWijzigingExportbestand){
-        this.tijdelijkeWijzigingExportbestand = TijdelijkeWijzigingExportbestand;
+    public String getRegio()
+    {
+        return this.Regio;
     }
 
-    public File getTijdelijkeWijzigingExportbestand( )
+    public void setExportbestand(File TijdelijkeWijzigingExportbestand){
+        this.Exportbestand = TijdelijkeWijzigingExportbestand;
+    }
+
+    public File getExportbestand( )
     {
-        return this.tijdelijkeWijzigingExportbestand;
+        return this.Exportbestand;
+    }
+
+    public void setRegio(String regio)
+    {
+        this.Regio = regio;
     }
 }

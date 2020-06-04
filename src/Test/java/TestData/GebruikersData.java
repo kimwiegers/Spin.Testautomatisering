@@ -4,6 +4,8 @@ public class GebruikersData
 {
     public static String DownloadFolder = "C:\\Users\\rws\\Downloads";
 
+    public static String Gebruiker = "Kim Wiegers";
+
     private String gebruikersnaam;
     private String wachtwoord;
 

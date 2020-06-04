@@ -53,4 +53,18 @@ public class Setup {
             }
         }
     }
+
+    @Before("@ExportVerkeersstops")
+    public void DeleteTestRecordsVerkeersstops()
+    {
+        File[] files = new File(GebruikersData.DownloadFolder).listFiles();
+        for (File file : files)
+        {
+            String name = file.getName();
+            if (name.contains("spinTrafficStop"))
+            {
+                file.delete();
+            }
+        }
+    }
 }
