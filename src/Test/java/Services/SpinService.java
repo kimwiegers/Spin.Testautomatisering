@@ -47,6 +47,10 @@ public class SpinService
         }
 
         _selenium.WaitUntilHomepageFullyLoaded();
+
+        _selenium.WaitUntilClickableThenClick(Hoofdpagina.FilterWissen);
+
+        _selenium.WaitUntilHomepageFullyLoaded();
     }
 
     public void ReturnToHomepage()

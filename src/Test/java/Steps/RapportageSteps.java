@@ -65,11 +65,13 @@ public class RapportageSteps
         _selenium.WaitUntilClickableThenClick(VerzendRapportage);
     }
 
-    @Dan("wordt een csv bestand gegenereert met alle data van de bestaande verkeersstops")
-    public void wordtEenCsvBestandGegenereertMetAlleDataVanDeBestaandeVerkeersstops() throws Exception
+    @Dan("wordt een csv bestand gegenereert met alle data van de geselecteerde verkeersstops")
+    public void wordtEenCsvBestandGegenereertMetAlleDataVanDeGeselecteerdeVerkeersstops() throws Exception
     {
         File export = new FileService().GetExportedFile("spinTrafficStop");
         String filename = export.getName();
         assertThat(filename).contains("spinTrafficStop.csv");
+
+        _testData.setExportbestand(export);
     }
 }

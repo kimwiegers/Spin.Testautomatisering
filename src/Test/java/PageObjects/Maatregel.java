@@ -17,6 +17,9 @@ public class Maatregel
 
     //Elementen onder algemene eigenschappen
     public static By Startdatum = By.xpath("/html/body/div[1]/div[3]/div/div[2]/div[1]/div[2]/div[1]/form/div/div[1]/div[2]/div[1]/div/div/div/div[1]/table/tbody/tr/td[1]/div/table/tbody/tr[2]/td/div/table/tbody/tr/td[1]/div/div[1]/div[1]/div/img");
+    public static By BegindatumInputfield = By.xpath("/html/body/div[1]/div[3]/div/div[2]/div[1]/div[2]/div[1]/form" +
+            "/div/div[1]/div[2]/div[1]/div/div/div/div[1]/table/tbody/tr/td[1]/div/table/tbody/tr[2]/td/div/table/tbody/tr/td[1]/div/div[1]/div[1]/div/input");
+
     public static By EinddatumInputfield = By.name("end");
     public static By VandaagInVanKalender = By.xpath("//button[contains(text(),'Vandaag')]");
 
@@ -70,6 +73,8 @@ public class Maatregel
     public static By VerkeersstopWegnummer = By.xpath("/html/body/div[1]/div[3]/div/div[2]/div[1]/div[2]/div[1]/form/div/div[3]/div[2]/div[1]/div/div/div/div/table/tbody/tr[1]/td/div/table/tbody/tr/td[3]/div/div[2]/div[2]/div/div/div[1]/div[1]/div[1]/div[2]/div/div/table/tbody/tr/td[3]/div");
     public static By VerkeersstopWegzijde = By.xpath("/html/body/div[1]/div[3]/div/div[2]/div[1]/div[2]/div[1]/form/div/div[3]/div[2]/div[1]/div/div/div/div/table/tbody/tr[1]/td/div/table/tbody/tr/td[3]/div/div[2]/div[2]/div/div/div[1]/div[1]/div[1]/div[2]/div/div/table/tbody/tr/td[4]/div");
     public static By VerkeersstopVanKilometer = By.xpath("/html/body/div[1]/div[3]/div/div[2]/div[1]/div[2]/div[1]/form/div/div[3]/div[2]/div[1]/div/div/div/div/table/tbody/tr[1]/td/div/table/tbody/tr/td[3]/div/div[2]/div[2]/div/div/div[1]/div[1]/div[1]/div[2]/div/div/table/tbody/tr/td[5]/div/span");
+    public static By VerkeersstopExporteren = By.xpath("/html/body/div[1]/div[3]/div/div[2]/div[1]/div[2]/div[1]/form" +
+            "/div/div[3]/div[2]/div[1]/div/div/div/div/table/tbody/tr[1]/td/div/table/tbody/tr/td[3]/div/div[2]/div[2]/div/div/div[2]/div/table[2]/tbody/tr[2]/td[2]/em/button/img");
 
     public static By OmleidingTabblad = By.xpath("/html/body/div[1]/div[3]/div/div[2]/div[1]/div[2]/div[1]/form/div/div[3]/div[2]/div[1]/div/div/div/div/table/tbody/tr[1]/td/div/table/tbody/tr/td[3]/div/div[1]/div[1]/ul/li[4]/a[2]/em/span/span");
     public static By OmleidingToevoegen = By.xpath("/html/body/div[1]/div[3]/div/div[2]/div[1]/div[2]/div[1]/form/div/div[3]/div[2]/div[1]/div/div/div/div/table/tbody/tr[1]/td/div/table/tbody/tr/td[3]/div/div[2]/div[2]/div/div[2]/div/table/tbody/tr[2]/td[2]/em/button");

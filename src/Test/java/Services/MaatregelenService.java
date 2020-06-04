@@ -1,7 +1,6 @@
 package Services;
 
 import PageObjects.Hoofdpagina;
-import PageObjects.Maatregel;
 import TestData.DriverSetup;
 import TestData.TestData;
 import TestData.WegData;
@@ -9,7 +8,6 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 
 import java.awt.*;
-import java.util.List;
 
 import static PageObjects.Maatregel.*;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -19,15 +17,17 @@ public class MaatregelenService
 
     private final SeleniumService _selenium;
     private final WebDriver driver;
+    private final DatesAndTimesService _datesAndTimesService;
 
-    public MaatregelenService(SeleniumService selenium, DriverSetup driverSetup)
+    public MaatregelenService(SeleniumService selenium, DriverSetup driverSetup, DatesAndTimesService datesAndTimesService)
     {
         driver = driverSetup.getDriver();
         _selenium = selenium;
+        _datesAndTimesService = datesAndTimesService;
     }
 
 
-    public void OpenNieuweMaatregel(WebElement fase) throws Exception
+    public void OpenNieuweMaatregel() throws Exception
     {
         Actions actions = new Actions(driver);
         actions.moveByOffset(Hoofdpagina.FaseX, Hoofdpagina.FaseY).perform();
@@ -74,9 +74,10 @@ public class MaatregelenService
         WaitUntilMaatregelPageLoaded();
     }
 
-    public void MaakNieuweMaatregelAan() throws Exception
+    public void MaakNieuweMaatregelAan(int begindatumAantalDagenVanafVandaag,
+                                       int einddatumAantalDagenVanafVandaag) throws Exception
     {
-        EnterMaatregelData();
+        EnterMaatregelData(begindatumAantalDagenVanafVandaag, einddatumAantalDagenVanafVandaag);
 
         Thread.sleep(3000);
         _selenium.WaitUntilElementIsEnabled(Bewaren);
@@ -102,9 +103,9 @@ public class MaatregelenService
         _selenium.WaitUntilClickableThenClick(Sluiten);
     }
 
-    public void EnterMaatregelData() throws Exception
+    public void EnterMaatregelData(int begindatumAantalDagenVanafVandaag, int einddatumAantalDagenVanafVandaag) throws Exception
     {
-        EnterTijdvakData();
+        EnterTijdvakData(begindatumAantalDagenVanafVandaag, einddatumAantalDagenVanafVandaag);
 
         Actions actions = new Actions(driver);
 
@@ -147,13 +148,13 @@ public class MaatregelenService
         driver.findElement(OpmerkingToevoegenOk).click();
     }
 
-    public void EnterTijdvakData()
+    public void EnterTijdvakData(int aantalDagenVanafVandaagBegindatum, int aantalDagenVanafVandaagEinddatum)
     {
-        _selenium.WaitUntilClickableThenClick(Startdatum);
-        _selenium.WaitUntilClickableThenClick(VandaagInVanKalender);
+        String begindatum = _datesAndTimesService.GetDatumFormatInvoerveld(aantalDagenVanafVandaagBegindatum);
+        String einddatum = _datesAndTimesService.GetDatumFormatInvoerveld(aantalDagenVanafVandaagEinddatum);
+        _selenium.EnterDataInputField(BegindatumInputfield, begindatum);
 
-        String datum = new DatesAndTimesService().GetDatumInToekomstFormatInvoerveld(7);
-        _selenium.EnterDataInputField(EinddatumInputfield, datum);
+        _selenium.EnterDataInputField(EinddatumInputfield, einddatum);
     }
 
     public void WaitUntilMaatregelPageLoaded() throws Exception

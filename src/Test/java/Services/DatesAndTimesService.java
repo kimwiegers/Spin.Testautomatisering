@@ -16,10 +16,10 @@ public class DatesAndTimesService
         return (huidigeDag + "." + huidigeMaand + "." + huidigJaar);
     }
 
-    public String GetDatumInToekomstFormatInvoerveld(int aantalDagenInDeToekomst)
+    public String GetDatumFormatInvoerveld(int plusaantalDagen)
     {
         Calendar kalender = Calendar.getInstance(TimeZone.getTimeZone("Europe/Amsterdam"));
-        kalender.add(Calendar.DAY_OF_YEAR, 7);
+        kalender.add(Calendar.DAY_OF_YEAR, plusaantalDagen);
         int dag = kalender.get(Calendar.DAY_OF_MONTH);
         int maand = kalender.get(Calendar.MONTH);
         maand += 1;

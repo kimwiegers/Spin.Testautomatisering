@@ -117,6 +117,22 @@ public class SeleniumService
         return false;
     }
 
+    public String getAttributeValue(WebElement element, String attribute) throws Exception
+    {
+        for (int i = 0; i < 5; i++)
+        {
+            String value = element.getAttribute(attribute);
+            if (value != null)
+            {
+                return value;
+            }
+
+            Thread.sleep(1000);
+        }
+
+        throw new Exception(String.format("No value of attribute %s found", attribute));
+    }
+
     public void ClickOnElementBasedOnCoordinates(int xCoordinate, int yCoordinate) throws AWTException
     {
         Robot robot = new Robot();

@@ -6,9 +6,11 @@ import TestData.DriverSetup;
 import TestData.TestData;
 import TestData.WegData;
 import TestData.GebruikersData;
+import com.opencsv.exceptions.CsvException;
 import cucumber.api.java.nl.Als;
 import cucumber.api.java.nl.Dan;
 import cucumber.api.java.nl.En;
+import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -16,6 +18,8 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.awt.*;
+import java.io.File;
+import java.io.IOException;
 import java.time.LocalDate;
 
 import static PageObjects.Maatregel.*;
@@ -71,16 +75,12 @@ public class MaatregelsSteps
 
         _fasenService.MaakNieuweFaseAan(werk);
 
-        WebElement fase = _fasenService.GetBestaandeFase();
+        _maatregelenService.OpenNieuweMaatregel();
 
-        _maatregelenService.OpenNieuweMaatregel(fase);
-
-        _maatregelenService.MaakNieuweMaatregelAan();
+        _maatregelenService.MaakNieuweMaatregelAan(0, 7);
 
         _maatregelenService.SluitNieuweBewaardeMaatregel();
     }
-
-
 
     @Dan("is de maatregel getoond in het overzicht")
     public void isDeMaatregelGetoondInHetOverzicht() throws Exception
@@ -137,11 +137,11 @@ public class MaatregelsSteps
         _selenium.WaitUntilClickableThenClick(Hoofdpagina.KlapEersteWerkOpEerstePaginaOpen);
         _maatregelenService.OpenNieuweMaatregelOnderbestaandeFase();
 
-        _maatregelenService.MaakNieuweMaatregelAan();
+        _maatregelenService.MaakNieuweMaatregelAan(0, 7);
 
         _maatregelenService.OpenNieuweMaatregelOnderbestaandeFase();
 
-        _maatregelenService.EnterTijdvakData();
+        _maatregelenService.EnterTijdvakData(0, 7);
         _maatregelenService.VulRouteIn();
     }
 
@@ -343,11 +343,9 @@ public class MaatregelsSteps
 
         _fasenService.MaakNieuweFaseAan(werk);
 
-        WebElement fase = _fasenService.GetBestaandeFase();
+        _maatregelenService.OpenNieuweMaatregel();
 
-        _maatregelenService.OpenNieuweMaatregel(fase);
-
-        _maatregelenService.MaakNieuweMaatregelAan();
+        _maatregelenService.MaakNieuweMaatregelAan(0, 7);
     }
 
     @En("de medewerker wijzigingen aanbrengt en de maatregel opnieuw opslaat")
@@ -474,5 +472,152 @@ public class MaatregelsSteps
                 "kaart is bewaard!");
         assertThat(opslaanTekst).isTrue();
         _selenium.WaitUntilClickableThenClick(KaartOpslaanBevestigen);
+    }
+
+    //Stappen onder testgeval 'Verkeersstop toevoegen aan maatregel en exporteren
+    @Als("de medewerker een export maakt van de verkeersstop")
+    public void deMedewerkerEenExportMaaktVanDeVerkeersstop()
+    {
+        _selenium.WaitUntilClickableThenClick(VerkeersstopExporteren);
+    }
+
+    @En("komt de data overeen met de aangemaakte verkeersstop")
+    public void komtDeDataOvereenMetDeAangemaakteVerkeersstop() throws IOException, CsvException
+    {
+        File export = _testData.getExportbestand();
+
+        String verkeersstopData = String.format("\"%s\";\"%s\";\"%s\"", WegData.Wegnummer, WegData.Wegzijde, WegData.VanKilometer);
+
+        assertThat(new FileService().TextIsPresentInCsvFile(verkeersstopData, export)).isTrue();
+    }
+
+    //Stappen onder testgeval 'Maatregel starten'
+    @En("de medewerker de bestaande maatregel start")
+    public void deMedewerkerDeBestaandeMaatregelStart() throws AWTException
+    {
+        _selenium.SwitchToCurrentScreen();
+        _selenium.ClickOnElementBasedOnCoordinates(Hoofdpagina.KlapEersteFaseOnderEersteWerkOpenX, Hoofdpagina.KlapEersteFaseOnderEersteWerkOpenY);
+        _selenium.ClickOnElementBasedOnCoordinates(Hoofdpagina.EersteMaatregelOnderEersteFaseX, Hoofdpagina.EersteMaatregelOnderEersteFaseY);
+
+        driver.findElement(Hoofdpagina.StartMaatregel).click();
+    }
+
+    //Stappen onder testgeval 'Actieve maatregel voorbij einddatum'
+    //TODO dit kan een beforestap worden met DB aanpassingen
+    @En("er is een maatregel aanwezig met een einddatum in het verleden en de status In uitvoering")
+    public void erIsEenMaatregelAanwezigMetEenEinddatumInHetVerledenEnDeStatusInUitvoering() throws Exception
+    {
+        _spinService.LogIn("interne gui");
+
+        _selenium.WaitUntilHomepageFullyLoaded();
+
+        _selenium.SetNewImplicitWaitTime(30);
+
+        _werkenService.VerwijderBestaandWerk();
+
+        _werkenService.OpenNieuwWerk();
+
+        _werkenService.CreeerNieuwWerk();
+
+        WebElement werk = _werkenService.VindAangemaakteWerkTerug();
+
+        _fasenService.MaakNieuweFaseAan(werk);
+
+        _maatregelenService.OpenNieuweMaatregel();
+
+        _maatregelenService.MaakNieuweMaatregelAan(-14, -7);
+
+        _maatregelenService.SluitNieuweBewaardeMaatregel();
+
+        _selenium.SwitchToCurrentScreen();
+
+        _selenium.ClickOnElementBasedOnCoordinates(Hoofdpagina.KlapEersteFaseOnderEersteWerkOpenX, Hoofdpagina.KlapEersteFaseOnderEersteWerkOpenY);
+        _selenium.ClickOnElementBasedOnCoordinates(Hoofdpagina.EersteMaatregelOnderEersteFaseX, Hoofdpagina.EersteMaatregelOnderEersteFaseY);
+        driver.findElement(Hoofdpagina.StartMaatregel).click();
+
+
+        //TODO bug: foutmelding bij starten maatregel in t verleden
+        if (driver.findElements(Hoofdpagina.FoutmeldingMaatregelStartenInHetVerleden).size() >= 1)
+        {
+            driver.findElement(Hoofdpagina.FoutmeldingMaatregelStartenInHetVerleden).click();
+        }
+    }
+
+    @Als("de medewerker de maatregel bekijkt in het overzicht")
+    public void deMedewerkerDeMaatregelBekijktInHetOverzicht() throws AWTException
+    {
+        // Geen code omdat beforescenario niet goed verwerkt kon worden met DB inserts dus er is al ingelogd etc.
+    }
+
+    @Dan("is het icoon van de maatregel rood gekleurd")
+    public void isHetIcoonVanDeMaatregelRoodGekleurd() throws Exception
+    {
+        WebElement icoon = driver.findElement(Hoofdpagina.EersteMaatregelIcoon);
+        String attribute = _selenium.getAttributeValue(icoon, "Style");
+
+        assertThat(attribute).contains("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8" +
+                "/9hAAAAeUlEQVR42mNgGBTgT1bO/zdMLERjkHoUA7AqmjXn/59ff8A0NnmCBsAMwSVHnAFAF9DfgD9uLv//LFry/4+fDyQMQDSIDxQnzgA9HXjggemyEggNFCfOACERiAYQPnQEwQaKEx0GcOfDMJBPciAihwHBQKQ4JQ5tAAApt0d72h5/kwAAAABJRU5ErkJggg==");
+    }
+
+    //Stappen onder testgeval 'Maatregel beeindigen'
+    @En("er is een maatregel aanwezig met de status In uitvoering")
+    public void erIsEenMaatregelAanwezigMetDeStatusInUitvoering() throws Exception
+    {
+        _spinService.LogIn("interne gui");
+
+        _selenium.WaitUntilHomepageFullyLoaded();
+
+        _selenium.SetNewImplicitWaitTime(30);
+
+        _werkenService.VerwijderBestaandWerk();
+
+        _werkenService.OpenNieuwWerk();
+
+        _werkenService.CreeerNieuwWerk();
+
+        WebElement werk = _werkenService.VindAangemaakteWerkTerug();
+
+        _fasenService.MaakNieuweFaseAan(werk);
+
+        _maatregelenService.OpenNieuweMaatregel();
+
+        _maatregelenService.MaakNieuweMaatregelAan(0, 7);
+
+        _maatregelenService.SluitNieuweBewaardeMaatregel();
+
+        _selenium.SwitchToCurrentScreen();
+
+        _selenium.ClickOnElementBasedOnCoordinates(Hoofdpagina.KlapEersteFaseOnderEersteWerkOpenX, Hoofdpagina.KlapEersteFaseOnderEersteWerkOpenY);
+        _selenium.ClickOnElementBasedOnCoordinates(Hoofdpagina.EersteMaatregelOnderEersteFaseX, Hoofdpagina.EersteMaatregelOnderEersteFaseY);
+        driver.findElement(Hoofdpagina.StartMaatregel).click();
+
+        Thread.sleep(1000);
+        if (driver.findElements(By.xpath("/html/body/div[6]/div[2]/div[1]/div/div/div/div/div[2]/div/table[2]/tbody/tr[2]/td[2]/em/button")).size() >= 1)
+        {
+            driver.findElement(By.xpath("/html/body/div[6]/div[2]/div[1]/div/div/div/div/div[2]/div/table[2]/tbody/tr[2]/td[2]/em/button")).click();
+        }
+    }
+
+    @Als("de medewerker de maatregel beeindigt")
+    public void deMedewerkerDeMaatregelBeeindigt()
+    {
+        _selenium.WaitUntilClickableThenClick(Hoofdpagina.BeeindigMaatregel);
+    }
+
+    @Dan("is de status van de maatregel veranderd naar {string}")
+    public void isDeStatusVanDeMaatregelVeranderdNaarGerealiseerd(String status) throws Exception
+    {
+        _selenium.TextInElementContainsExpectedText(Hoofdpagina.EersteMaatregelStatus, status.toLowerCase());
+    }
+
+    //Stappen onder testgeval 'Maatregel op Niet uitgevoerd zetten'
+    @Als("de medewerker de maatregel op niet uitgevoerd zet")
+    public void deMedewerkerDeMaatregelOpNietUitgevoerdZet() throws AWTException
+    {
+        _selenium.ClickOnElementBasedOnCoordinates(Hoofdpagina.EersteMaatregelOnderEersteFaseX, Hoofdpagina.EersteMaatregelOnderEersteFaseY);
+        _selenium.WaitUntilClickableThenClick(Hoofdpagina.ZetMaatregelOpNietUitgevoerd);
+
+        _selenium.EnterDataInputField(Hoofdpagina.OpmerkingenveldMaatregelNietUitgevoerd, TestData.Testomschrijving);
+        _selenium.WaitUntilClickableThenClick(Hoofdpagina.MaatregelNietUitgevoerdBevestiging);
     }
 }
